@@ -1,0 +1,45 @@
+{% extends "../user_base/base.html" %}
+{% load static %}
+
+{% block header %}
+
+{% if user.is_authenticated %}
+    <section id="container">
+        <header id="header">
+            <section class="inner">
+                <h1 class="logo">
+                    <a href="#">
+                        <div class="sprite_write_logo"></div>
+                    </a>
+                </h1>
+                <div class="right_icons">
+                    <a href="#">
+                        <div class="sprite_camera_icon"></div>
+                    </a>
+                    <a href="#">
+                        <div class="sprite_compass_icon"></div>
+                    </a>
+                    <a href="#">
+                        <div class="sprite_heart_icon_outline"></div>
+                    </a>
+                    <a href="#">
+                        <div class="sprite_user_icon_outline"></div>
+                    </a>
+                    <a href="#">
+                        <div class="sprite_unlock_icon"></div>
+                    </a>
+                </div>
+            </section>
+        </header>
+    </section>
+{% else %}
+    <header id="header">
+        <section class="h_inner">
+            <h1 class="logo">
+                <div OnClick="location.href ='#'" style="cursor:pointer;" class="sprite_write_logo"></div>
+            </h1>
+        </section>
+    </header>
+{% endif %}
+
+{% endblock header %}
