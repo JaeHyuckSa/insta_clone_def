@@ -1,11 +1,19 @@
 from django.shortcuts import render, redirect
-from .models import User
+from django.contrib.auth.decorators import login_required
 from django.contrib import auth
-from django.contrib.auth import get_user_model 
+from .models import User
+
 # Create your views here.
 
 def signin(request):
-    if request.method == 'POST':
+    if request.method == 'GET':
+        user = request.user.is_authenticated
+        if user:
+            return redirect('/')
+        else:
+            return render(request, 'user/account/login.html')
+        
+    elif request.method == 'POST':
         email = request.POST.get('email', '')
         username = User.objects.get(email=email)
         password = request.POST.get('password', '')
@@ -16,13 +24,7 @@ def signin(request):
             return redirect('/')
         else:
             return render(request, 'user/account/login.html', {'error':'이메일 혹은 패스워드를 확인 해주세요.'})
-    elif request.method == 'GET':
-        user = request.user.is_authenticated
-        if user:
-            return redirect('/')
-        else:
-            return render(request, 'user/account/login.html')
-
+    
 def signup(request):
     if request.method == 'GET':
         user = request.user.is_authenticated
@@ -48,3 +50,8 @@ def signup(request):
             else:
                 User.objects.create_user(email=email, username=username, password=password)
                 return redirect('/account/signin/')
+            
+@login_required
+def logout(request):
+    auth.logout(request)
+    return redirect('/account/signin/')
