@@ -37,8 +37,12 @@
                             {% if post.author == user %}
                             <div class="sprite_more_icon" data-name="more">
                                 <ul class="toggle_box">
-                                    <li>수정</li>
-                                    <li>삭제</li>
+                                    <li>
+                                        <a href="{% url 'post:post-update' post.id %}">수정</a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'post:post-delete' post.id %}">삭제</a>
+                                    </li>
                                 </ul>
                             </div>
                             {% endif %}

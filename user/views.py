@@ -4,10 +4,12 @@ from django.contrib import auth
 from .models import User
 
 # Create your views here.
-
+#template에서 값을 넘겨줄 때 input방식과 form방식이있다.
+#template에서 input값으로 데이터 받아오는 방법이 있다
+#forms.py를 만들어 필드를 정의한다음  form.is_valid를 사용하여 처리리하는 방법이 있다
 def signin(request):
     if request.method == 'GET':
-        user = request.user.is_authenticated
+        user = request.user.is_authenticated #bool값으로 True냐 False냐...
         if user:
             return redirect('/')
         else:

@@ -1,0 +1,159 @@
+{% extends "post_base/base_detail_with_header.html" %}
+
+{% block post-detail-style %}
+    <style>
+        .detail_comment_field {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+{% endblock %}
+
+{% load widget_tweaks %}
+
+{% block title %}상세페이지 | Sparkling Coffee Club{% endblock title %}
+
+{% block content %}
+    <div id="main_container">
+        <section class="b_inner">
+            <div class="contents_box">
+                <article class="contents cont01">
+                    <div class="img_section">
+                        <div class="trans_inner">
+                            <div><img src="{{ post.image.url }}" alt=""></div>
+                        </div>
+                    </div>
+                    <div class="detail--right_box">
+                        <header class="top">
+                            <div class="user_container" style="align-items:flex-start">
+                                <div class="profile_img">
+                                    <a href="{% url 'profile' post.author.id %}">
+                                        <img src="{{ post.author.profile_image.url }}" alt="프로필 사진">
+                                    </a>
+                                </div>
+                                <div class="user_name">
+                                    <div class="nick_name">{{post.author.username}}</div>
+                                    <div class="country">{{post.author.email}}</div>
+                                    <div style="margin-top:20px; word-break:break-all;word-wrap:break-word; width:250px">{{ post.content }}</div>
+                                </div>
+                            </div>
+                            {% if post.author == user %}
+                                <div class="sprite_more_icon" data-name="more">
+                                    <ul class="toggle_box">
+                                        <li>
+                                            <a href="{% url 'post-update' post.id %}">수정</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'post-delete' post.id %}">삭제</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            {% endif %}
+
+                        </header>
+
+                        <section class="scroll_section">
+                            {% for comment in post.comments.all %}
+                                <p>
+                                    <p>
+                                        <div class="user_container-detail">
+                                            <div class="user">
+                                                <div class="profile_img">
+                                                    <a href="{% url 'profile' comment.author.id %}">
+                                                        <img src="{{ comment.author.profile_image.url }}" alt="프로필 사진">
+                                                    </a>
+                                                </div>
+                                                <a href={% url 'profile' comment.author.id %}><img></a>
+                                            </div>
+                                            <div class="comment">
+                                                <span class="user_id">{{ comment.author.username }}</span>{{ comment.content }}
+                                                <div class="time">
+                                                    {{ comment.created_at }}</div>
+                                                <div class="icon_wrap">
+                                                    <div class="more_trigger">
+                                                        {% if user == comment.author %}
+                                                            <div class="sprite_more_icon" data-name="more">
+                                                                <ul class="toggle_box">
+                                                                    <li>
+                                                                        <a href="{% url 'comment-update' comment.id %}">수정</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="{% url 'comment-delete' comment.id %}">삭제</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        {% endif %}
+                                                    </div>
+                                                    <div></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+
+                                </section>
+
+                                <div class="bottom_icons">
+                                    <div class="left_icons" style="width:100px; height:30px;" >
+                                        <form action="{% url 'process-like' post_ctype_id post.id %}" 
+                                              method="post">
+                                            {% csrf_token %}
+                                            {% if post.likes.all %}
+                                                <input
+                                                    type="submit"
+                                                    value=""
+                                                    class="sprite_heart_icon_outline_deatil on"
+                                                    name="39"
+                                                    data-name="heartbeat"></input>
+                                            {% else %}
+                                                <input
+                                                    type="submit"
+                                                    value=""
+                                                    class="sprite_heart_icon_outline_deatil"
+                                                    name="39"
+                                                    data-name="heartbeat"></input>
+                                            {% endif %}                                        
+                                            <a href="{% url 'post-detail' post.id %}">
+                                                <div class="sprite_bubble_icon" style="float:right; margin-left:10px;"> </div>
+                                            </a>  
+                                        </form>                                        
+                                                                                 
+                                    </div>
+                                    <div class="right_icon">
+                                        <div class="sprite_bookmark_outline" data-name="book-mark"></div>
+                                    </div>
+                                </div>
+                                <div class="count_likes">
+                                    좋아요
+                                    <span class="count">{{ post.likes.count }}</span>
+                                    개
+                                </div>
+                                <div class="timer">{{ post.created_at }}</div>
+                                <form
+                                    class="comment-create-form"
+                                    action="{% url 'comment-create' post.id %}"
+                                    method="post">
+                                    {% csrf_token %}
+                                    <div class="detail_comment_field" style="height: 35px; font-size : 13px;">
+                                        {{ form.content |attr:"placeholder:댓글 달기..."|attr:"style:border:none"|attr:'style:float:left'|attr:'style:width:100%'}}
+                                        <button
+                                            type="submit"
+                                            style=" border:none; background:none; float:right; font-size:13px; color:skyblue;">게시</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </section>
+        </div>
+        <div class="del_pop">
+            <div class="btn_box">
+                <div class="del">삭제</div>
+                <div class="cancel">취소</div>
+            </div>
+        </div>
+
+    </section>
+{% endblock content %}
