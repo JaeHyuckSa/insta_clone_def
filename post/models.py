@@ -13,3 +13,10 @@ class Post(models.Model):
     def __str__(self):
         return self.content
     
+class Comment(models.Model):
+    content = models.TextField(max_length=50, blank=False)
+    create_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+    
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments')
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
