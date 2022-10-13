@@ -5,17 +5,19 @@ from .models import Post, Comment
 from user.models import User
 
 # Create your views here.
+
 def index(request):
     if request.method == 'GET':
         user = request.user.is_authenticated
         if user:
-            #값을 넘겨 줄떄는 사전형으로 만들어서 하면 깔끔하니 보기가 좋다.
+            #값을 넘겨 줄떄는 사전형으로 만들어서 하면 깔끔하니 보기가 좋다. 
+            # 또 다른 방법으로 넘겨 줄 수 있는데 context={ 'user': user} 이런식으로 가능하다.
             context = dict()
             context['posts'] = Post.objects.all().order_by('-create_at')
             context['users'] = User.objects.all()
             return render(request, 'post/post/index.html', context=context)
         return render(request, 'post/post/index.html')
-        
+
 @login_required(login_url='/account/signin/')
 def post_detail(request, post_id):
     if request.method == 'GET':
@@ -72,10 +74,10 @@ def post_update(request, post_id):
 @login_required(login_url='/account/signin/')
 def comment_create(request, comment_id):
     if request.method == 'POST':
-        
         user = request.user
         post = Post.objects.get(id=comment_id)
         content = request.POST.get('content')
+        #comment = Comment() ->모델 불러오는 법
         #이렇게 하는 방식도 있지만 모델을 불러와서 comment.content = content 로 하는 방법으로 save하는 방식
         Comment.objects.create(content=content, author=user, post=post)
         #post_id와 post.id와 다른 것이다!!!!!!!!!!!!!!!!!
@@ -83,16 +85,16 @@ def comment_create(request, comment_id):
     
 @login_required(login_url='/account/signin/')
 def comment_delete(request, comment_id):
-    if request.method == 'GET':
-        
-        return render(request, 'post/post/comment_confirm_delete.html')
+    if request.method == 'GET':      
+        return render(request, 'post/post/comment_confirm_delete.html' )
     
-    elif request.method == 'POST':
-        
+    elif request.method == 'POST': 
         comment = Comment.objects.get(id=comment_id)
-        comment.delete() 
-        #디테일 페이지로 이동하는 방법
-        return redirect('/')
+        post_id = comment.post.id
+        comment.delete()
+
+        return redirect('post:post-detail', post_id)
+        
         
 @login_required(login_url='/account/signin/')
 def comment_update(request, comment_id):
@@ -103,8 +105,9 @@ def comment_update(request, comment_id):
     
     elif request.method =='POST':
         edit_comment = Comment.objects.get(id=comment_id)
+        post_id = edit_comment.post.id
         edit_comment.content = request.POST.get('content')
         edit_comment.save()
         #디테일 페이지로 이동하는 방법
-        return redirect('/')
+        return redirect('post:post-detail', post_id)
 
