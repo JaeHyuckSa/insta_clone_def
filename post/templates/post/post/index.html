@@ -39,7 +39,7 @@
                                 <ul class="toggle_box">
                                     <li>
                                         <a href="{% url 'post:post-update' post.id %}">수정</a>
-                                    </li>
+                                    </li>ㄹ
                                     <li>
                                         <a href="{% url 'post:post-delete' post.id %}">삭제</a>
                                     </li>
@@ -73,13 +73,13 @@
                             <span id="bookmark-count-39"></span>
                             개
                         </div>
-
                         <div class="comment_container">
                             <div class="comment" id="comment-list-ajax-post37">
                                 <div class="comment-detail">
                                     <div class="nick_name m_text">{{ post.author.username }}</div>
                                     <div>{{ post.content }}</div>
                                 </div>
+                                <a href="{% url 'post:post-detail' post.id %}" style="color: gray;">댓글 모두 보기</a>
                             </div>
                             <div class="small_heart">
                                 <div class="sprite_small_heart_icon_outline"></div>

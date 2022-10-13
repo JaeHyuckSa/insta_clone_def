@@ -8,7 +8,7 @@
         <header id="header">
             <section class="inner">
                 <h1 class="logo">
-                    <a href="#">
+                    <a href="{% url 'post:index' %}">
                         <div class="sprite_write_logo"></div>
                     </a>
                 </h1>
@@ -36,7 +36,7 @@
     <header id="header">
         <section class="h_inner">
             <h1 class="logo">
-                <div OnClick="location.href ='#'" style="cursor:pointer;" class="sprite_write_logo"></div>
+                <div OnClick="location.href ='{% url 'user:signin' %}'" style="cursor:pointer;" class="sprite_write_logo"></div>
             </h1>
         </section>
     </header>

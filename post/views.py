@@ -14,9 +14,15 @@ def index(request):
             context['posts'] = Post.objects.all().order_by('-create_at')
             context['users'] = User.objects.all()
             return render(request, 'post/post/index.html', context=context)
-
-
-# def
+        return render(request, 'post/post/index.html')
+        
+@login_required(login_url='/account/signin/')
+def post_detail(request, post_id):
+    if request.method == 'GET':
+        context = dict()
+        context['post'] = Post.objects.get(id=post_id)
+        context['users'] = User.objects.all()
+        return render(request, 'post/post/post_detail.html', context=context)
 
 #로그인이 한 사람만 접속이 가능하고 안되어있다면 로그인페이지로!
 @login_required(login_url='/account/signin/')
