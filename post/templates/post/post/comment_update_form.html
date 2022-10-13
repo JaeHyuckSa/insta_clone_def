@@ -1,0 +1,24 @@
+{% extends "../post_base/base_with_header.html" %}
+
+
+{% block title %}댓글 수정 | Sparkling Coffee Club{% endblock title %}
+
+{% block content %}
+    <div id="main_container">
+        <div class="form_container">
+            <form class="form" method="post" style="border-radius:5px; ">
+                {% csrf_token %}                
+                <div class="sign_up_text">
+                    <p style="margin:18px auto 15px auto;">댓글을 수정해주세요</p>
+                    <form class="comment-update-form"
+                        method="post">
+                        {% csrf_token %}
+                        <input name='content' placeholder='댓글 달기...' class='cp-input' type='text' value='{{ comment.content }}' />
+                    </form>
+                    <br>
+                    <button class="submit_btn" type="submit" style="margin-top:15px;">수정</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock content %}

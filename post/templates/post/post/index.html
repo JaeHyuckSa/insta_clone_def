@@ -39,7 +39,7 @@
                                 <ul class="toggle_box">
                                     <li>
                                         <a href="{% url 'post:post-update' post.id %}">수정</a>
-                                    </li>ㄹ
+                                    </li>
                                     <li>
                                         <a href="{% url 'post:post-delete' post.id %}">삭제</a>
                                     </li>
@@ -80,9 +80,6 @@
                                     <div>{{ post.content }}</div>
                                 </div>
                                 <a href="{% url 'post:post-detail' post.id %}" style="color: gray;">댓글 모두 보기</a>
-                            </div>
-                            <div class="small_heart">
-                                <div class="sprite_small_heart_icon_outline"></div>
                             </div>
                         </div>
 

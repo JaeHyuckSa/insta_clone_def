@@ -1,0 +1,46 @@
+{% extends "../post_base/base_with_header.html" %}
+
+{% block comment-delete-style %}
+<style>   
+    .content {
+        display : flex;
+        flex-direction :column;
+        justify-content: center;
+        align-items: center;
+        }
+    .delete-buttons {
+        display : flex;
+        flex-direction :row;
+        justify-content: center;
+        align-items: center;
+        
+        font-size: 15px;
+    
+    }
+    .material-symbols-outlined {
+        font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 48
+    }
+
+</style>
+{% endblock %}
+
+{% block title %}댓글 삭제 | Sparkling Coffee Club{% endblock title %}
+
+{% block content %}
+<div id="main_container">
+    <div class="form_container ">
+        <form class="form" method="post">
+            {% csrf_token %}            
+            <div class="sign_up_text">  
+                <br>              
+                <p>댓글을 삭제하시겠습니까?</p>                           
+                <button class="submit_btn" type="submit" >삭제</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock content %}
