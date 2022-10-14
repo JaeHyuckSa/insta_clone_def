@@ -26,7 +26,9 @@
                         <header class="top">
                             <div class="user_container">
                                 <div class="profile_img">
+                                    <a href="{% url 'post:profile' user.id %}">
                                     <img src="{{ post.author.profile_image.url }}" alt="프로필이미지">
+                                    </a>
                                 </div>
                                 <div class="user_name">
                                     <div class="nick_name m_text">{{ post.author.username }}</div>
@@ -98,7 +100,9 @@
             <div class="side_box">
                 <div class="user_profile">
                     <div class="profile_thumb">
+                        <a href="{% url 'post:profile' user.id %}">
                         <img src="{{ user.profile_image.url }}" alt="프로필사진">
+                        </a>
                     </div>
                     <div class="detail">
                         <div class="id m_text">{{user.username}}</div>
@@ -115,7 +119,9 @@
                         {% for user in users %}
                         <div class="thumb_user">
                             <div class="profile_thumb">
+                                <a href="{% url 'post:profile' user.id %}">
                                 <img src="{{ user.profile_image.url }}" alt="프로필사진">
+                                </a>
                             </div>
                             <div class="detail">
                                 <div class="id">{{ user.username }}</div>

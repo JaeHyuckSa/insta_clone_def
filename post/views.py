@@ -24,8 +24,8 @@ def post_detail(request, post_id):
         context = dict()
         context['post'] = Post.objects.get(id=post_id)
         context['users'] = User.objects.all()
-        #filter와 get의 차이를 확실히 알아야한다.
-        context['comments'] = Comment.objects.filter(post_id=post_id)
+        #filter와 get의 차이를 확실히 알아야한다.최신순으로 불러오기!
+        context['comments'] = Comment.objects.filter(post_id=post_id).order_by('-create_at')
         return render(request, 'post/post/post_detail.html', context=context)
     
 
@@ -109,5 +109,15 @@ def comment_update(request, comment_id):
         edit_comment.content = request.POST.get('content')
         edit_comment.save()
         #디테일 페이지로 이동하는 방법 comment로 인자값을 가져온다!
-        return redirect('post:post-detail', post_id)
+        return redirect('post:post-detail', post_id) #redirect는 url 뿐만아니라 url name도 설정해줄 수 있다.
+        #return redirect('/post/detail/'+str(post_id)) #장진님! 이런식으로 디테일 페이지로 이동할 수 있는 방법이 있다
 
+@login_required(login_url='/account/signin/')
+def profile(request, user_id):
+    if request.method == 'GET':
+        context = dict()
+        context['profile_user'] = User.objects.get(id=user_id)
+        context["user_post"] = Post.objects.filter(author=user_id)
+
+        return render(request, 'post/post/profile.html', context=context)
+    

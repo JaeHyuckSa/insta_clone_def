@@ -17,7 +17,7 @@ urlpatterns = [
     path('comment/<int:comment_id>/edit/', views.comment_update, name='comment-update'),
     
     #profile
-    path('users/<int:user-id>/',views.profile, name='profile' ),
+    path('users/<int:user_id>/', views.profile, name='profile'),
     # path('set-profile/', views.profile_set, name='profile-set'),
     # path('edit-profile/', views.profile_update, name='profile-update'),
 
