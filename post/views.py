@@ -117,7 +117,7 @@ def profile(request, user_id):
     if request.method == 'GET':
         context = dict()
         context['profile_user'] = User.objects.get(id=user_id)
-        context["user_post"] = Post.objects.filter(author=user_id)
+        context["user_post"] = Post.objects.filter(author=user_id)#author를 타고 user_id해야함
 
         return render(request, 'post/post/profile.html', context=context)
     

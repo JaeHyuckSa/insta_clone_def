@@ -16,138 +16,147 @@
 {% endblock %}
 
 {% block content %}
-{% if user.is_authenticated %}
-<section id="container">
-    <section id="main_container">
-        <div class="inner">
-            <div class="contents_box">
-                {% for post in posts %}
-                    <article class="contents">
-                        <header class="top">
-                            <div class="user_container">
-                                <div class="profile_img">
-                                    <a href="{% url 'post:profile' user.id %}">
-                                    <img src="{{ post.author.profile_image.url }}" alt="프로필이미지">
-                                    </a>
+    {% if user.is_authenticated %}
+        <section id="container">
+            <section id="main_container">
+                <div class="inner">
+                    <div class="contents_box">
+                        {% for post in posts %}
+                            <article class="contents">
+                                <header class="top">
+                                    <div class="user_container">
+                                        <div class="profile_img">
+                                            <a href="{% url 'post:profile' user.id %}">
+                                                <img src="{{ post.author.profile_image.url }}" alt="프로필이미지">
+                                            </a>
+                                        </div>
+                                        <div class="user_name">
+                                            <div class="nick_name m_text">{{ post.author.username }}</div>
+                                            <div class="country s_text">{{ post.author.email }}</div>
+                                        </div>
+
+                                    </div>
+                                    {% if post.author == user %}
+                                        <div class="sprite_more_icon" data-name="more">
+                                            <ul class="toggle_box">
+                                                <li>
+                                                    <a href="{% url 'post:post-update' post.id %}">수정</a>
+                                                </li>
+                                                <li>
+                                                    <a href="{% url 'post:post-delete' post.id %}">삭제</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    {% endif %}
+                                </header>
+
+                                <div class="img_section">
+                                    <div class="trans_inner">
+                                        <div><img src="{{ post.image.url }}" alt="visual01"></div>
+                                    </div>
                                 </div>
-                                <div class="user_name">
-                                    <div class="nick_name m_text">{{ post.author.username }}</div>
-                                    <div class="country s_text">{{ post.author.email }}</div>
+
+                                <div class="bottom_icons">
+                                    <div class="left_icons">
+                                        <div class="heart_btn">
+                                            <div class="sprite_heart_icon_outline" name="39" data-name="heartbeat"></div>
+                                        </div>
+                                        <div class="sprite_bubble_icon"></div>
+                                        <div class="sprite_share_icon" data-name="share"></div>
+                                    </div>
+                                    <div class="right_icon">
+                                        <div class="sprite_bookmark_outline" data-name="bookmark"></div>
+                                    </div>
                                 </div>
 
-                            </div>
-                            {% if post.author == user %}
-                            <div class="sprite_more_icon" data-name="more">
-                                <ul class="toggle_box">
-                                    <li>
-                                        <a href="{% url 'post:post-update' post.id %}">수정</a>
-                                    </li>
-                                    <li>
-                                        <a href="{% url 'post:post-delete' post.id %}">삭제</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            {% endif %}
-                        </header>
-
-                        <div class="img_section">
-                            <div class="trans_inner">
-                                <div><img src="{{ post.image.url }}" alt="visual01"></div>
-                            </div>
-                        </div>
-
-                        <div class="bottom_icons">
-                            <div class="left_icons">
-                                <div class="heart_btn">
-                                    <div class="sprite_heart_icon_outline" name="39" data-name="heartbeat"></div>
+                                <div class="likes m_text">
+                                    좋아요
+                                    <span id="like-count-39">2,346</span>
+                                    <span id="bookmark-count-39"></span>
+                                    개
                                 </div>
-                                <div class="sprite_bubble_icon"></div>
-                                <div class="sprite_share_icon" data-name="share"></div>
-                            </div>
-                            <div class="right_icon">
-                                <div class="sprite_bookmark_outline" data-name="bookmark"></div>
-                            </div>
-                        </div>
-
-                        <div class="likes m_text">
-                            좋아요
-                            <span id="like-count-39">2,346</span>
-                            <span id="bookmark-count-39"></span>
-                            개
-                        </div>
-                        <div class="comment_container">
-                            <div class="comment" id="comment-list-ajax-post37">
-                                <div class="comment-detail">
-                                    <div class="nick_name m_text">{{ post.author.username }}</div>
-                                    <div>{{ post.content }}</div>
+                                <div class="comment_container">
+                                    <div class="comment" id="comment-list-ajax-post37">
+                                        <div class="comment-detail">
+                                            <div class="nick_name m_text">{{ post.author.username }}</div>
+                                            <div>{{ post.content }}</div>
+                                        </div>
+                                        <a href="{% url 'post:post-detail' post.id %}" style="color: gray;">댓글 모두 보기</a>
+                                    </div>
                                 </div>
-                                <a href="{% url 'post:post-detail' post.id %}" style="color: gray;">댓글 모두 보기</a>
-                            </div>
-                        </div>
 
-                        <div class="timer">{{ post.create_at }}</div>
+                                <div class="timer">{{ post.create_at }}</div>
 
-                        <div class="comment_field" id="add-comment-post37">
-                            <input type="text" placeholder="댓글달기...">
-                            <div class="upload_btn m_text" data-name="comment">게시</div>
-                        </div>
-                    </article>
-                {% endfor %}
+                                <div class="comment_field" id="add-comment-post37">
+                                    <form
+                                        class="comment-create-form"
+                                        action="{% url 'post:comment-create' post.id %}"
+                                        method="post">
+                                        {% csrf_token %}
+                                        <div class="comment_field" style="height: 20px; font-size: 13px;">
+                                            <input type="text" placeholder="댓글달기..." name="content">
+                                            <button type="submit" style=" border: none; background:none; float:right; font-size : 13px; color: skyblue">게시</button>
+                                            </input>
+                                        </div>
+                                    </form>
+                                </div>
+                            </article>
+                        {% endfor %}
 
-            </div>
-            <input type="hidden" id="page" value="1">
-
-            <div class="side_box">
-                <div class="user_profile">
-                    <div class="profile_thumb">
-                        <a href="{% url 'post:profile' user.id %}">
-                        <img src="{{ user.profile_image.url }}" alt="프로필사진">
-                        </a>
                     </div>
-                    <div class="detail">
-                        <div class="id m_text">{{user.username}}</div>
-                        <div class="ko_name">{{user.email}}</div>
-                    </div>
-                </div>
+                    <input type="hidden" id="page" value="1">
 
-                <article class="story">
-                    <header class="story_header">
-                        <div>스토리</div>
-                        <div class="more">모두 보기</div>
-                    </header>
-                    <div class="scroll_inner">
-                        {% for user in users %}
-                        <div class="thumb_user">
+                    <div class="side_box">
+                        <div class="user_profile">
                             <div class="profile_thumb">
                                 <a href="{% url 'post:profile' user.id %}">
-                                <img src="{{ user.profile_image.url }}" alt="프로필사진">
+                                    <img src="{{ user.profile_image.url }}" alt="프로필사진">
                                 </a>
                             </div>
                             <div class="detail">
-                                <div class="id">{{ user.username }}</div>
+                                <div class="id m_text">{{user.username}}</div>
+                                <div class="ko_name">{{user.email}}</div>
                             </div>
                         </div>
-                        {% endfor %}
+
+                        <article class="story">
+                            <header class="story_header">
+                                <div>스토리</div>
+                                <div class="more">모두 보기</div>
+                            </header>
+                            <div class="scroll_inner">
+                                {% for user in users %}
+                                    <div class="thumb_user">
+                                        <div class="profile_thumb">
+                                            <a href="{% url 'post:profile' user.id %}">
+                                                <img src="{{ user.profile_image.url }}" alt="프로필사진">
+                                            </a>
+                                        </div>
+                                        <div class="detail">
+                                            <div class="id">{{ user.username }}</div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </article>
                     </div>
-                </article>
+                </div>
+            </section>
+        </section>
+    {% else %}
+        <div id="main_container">
+            <div class="form_container ">
+                <div class="form">
+                    <div class="sign_up_text">
+                        <br>
+                        <p>시작하려면 로그인이 필요합니다.
+                        </p>
+                        <a class="sign_user_btn_color" href="{% url "user:signin" %}">로그인</a>
+                        <a class="sign_user_btn_color" href="{% url "user:signup" %}">회원가입</a>
+                    </div>
+                </div>
             </div>
         </div>
-    </section>
-</section>
-{% else %}
-<div id="main_container">
-    <div class="form_container ">
-        <div class="form">
-            <div class="sign_up_text">
-                <br>
-                <p>시작하려면 로그인이 필요합니다.
-                </p>
-                <a class="sign_user_btn_color" href="{% url "user:signin" %}">로그인</a>
-                <a class="sign_user_btn_color" href="{% url "user:signup" %}">회원가입</a>
-            </div>
-        </div>
-    </div>
-</div>
-{% endif %}
+    {% endif %}
 
 {% endblock content %}
