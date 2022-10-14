@@ -7,5 +7,5 @@ class User(AbstractUser):
         default="default_profile_pic.jpg",upload_to="profile_pics"
     )
     
-    intro = models.CharField(max_length=60, blank=True)
+    intro = models.CharField(max_length=60, blank=True, null=True)
     

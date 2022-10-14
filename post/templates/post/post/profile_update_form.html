@@ -1,0 +1,125 @@
+{% extends "../post_base/base_with_header.html" %}
+
+{% load widget_tweaks %}
+
+{% block title %}회원정보 수정 | Sparkling Coffee Club{% endblock title %}
+
+{% block content %}
+
+<style>
+  #nav_div {
+    list-style: none;
+    height: 60px;
+  }
+
+  #nav_div:hover {
+    background-color: #eeeeee;
+    border-left: solid 3px;
+  }
+
+  #nav_a {
+    font-size: 18px;
+    padding-left: 20px;
+    display: block;
+    line-height: 60px;
+  }
+
+  #nav_a:hover {
+    text-decoration: none;
+  }
+
+  #side-navbar {
+    width: 220px;
+    height: 100%;
+    float: left;
+  }
+</style>
+
+
+<div style="
+  width: 950px;
+  height: 100%;
+  margin: 100px auto;
+  background-color: #fff;
+  border: 1px solid #e6e6e6;
+  margin-bottom: 30px;">
+
+
+  <!-- side Nav bar -->
+  <div id="side-navbar">
+    <div class="menu" style="margin-top: 40px;">
+      <div id="nav_div"><a id="nav_a" href="{% url 'post:profile-update' user.id  %}">프로필 편집</a></div>
+      <div id="nav_div"><a id="nav_a" href="#">비밀번호 변경</a></div>
+      <div id="nav_div"><a id="nav_a" href="#">계정 비활성화</a></div>
+    </div>
+  </div>
+
+  <main style="
+    border-radius: 6px;
+    margin: 0px 0px 0px 100px;
+    padding: 30px 150px;
+    width: 100%;">
+
+
+    <!-- Profile img & name -->
+    <div class="title" style="width: 100%;height: 70px; padding-left: 120px;float: left;">
+      <div class="profile-pic cp-avatar large"
+        style="background-image: url('{{ user.profile_image.url }}'); width:40px; height:40px;float: left;"></div>
+      <div style="font-size: 25px;float: left;padding-left: 20px;">{{user.username}}</div>
+    </div>
+
+    <!-- contents -->
+    <div>
+      <form method="post" enctype="multipart/form-data" autocomplete="off">{% csrf_token %}
+
+        <div style="width: 150px; height:50px;float: left;">
+          <p style="font-size: 17px; text-align: right;">이름</p>
+        </div>
+
+        <div style="width: 75%; float: left;padding-left:30px">
+          <div class="mb-3" style="width:450px; height:50px;">
+            <input type="text"class="form-control" placeholder="이름" style="width:300px;" value={{ user.username }} name='username'>
+          </div>
+        </div>
+
+        <div style="width: 150px; height:50px;float: left;">
+          <p style="font-size: 17px; text-align: right;">소개</p>
+        </div>
+
+        <div style="width: 75%; float: left;padding-left:30px">
+          <div class="mb-3" style="width:450px; height:50px;">
+            <input type="text"class="form-control" placeholder="소개" style="width:300px;" value='{{ user.intro }}' name='intro'>
+          </div>
+        </div>
+
+        <div style="width: 150px; height:50px; float: left;">
+          <p style="font-size: 17px; text-align: right;">프로필 사진</p>
+        </div>
+
+        <div style="width: 75%; float: left;padding-left:30px">
+          <div type="file">
+            <input type="file" name="image" id="id_photo" required="required" value='image'>
+          </div>
+        </div>
+        
+        
+        
+
+
+        <div style="width: 100%;min-width: 500px; height: 200px; float: left;padding:0px 0px 0px 180px">
+          <div class="buttons">
+            <button type="submit" class="btn btn-primary"
+            style="margin-bottom:20px;background-color:rgb(0, 149, 247);width: 80px">제출</button>
+            <button onclick="{% url 'post:profile' user.id %}" class="btn btn-secondary"
+            style="margin-bottom:20px;;width: 80px">취소</button>
+          </div>
+        </div>
+      </form>
+
+    </div>
+</div>
+</main>
+
+</div>
+
+{% endblock content %}

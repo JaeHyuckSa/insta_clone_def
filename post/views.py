@@ -10,6 +10,7 @@ def index(request):
     if request.method == 'GET':
         user = request.user.is_authenticated
         if user:
+            print(request.user)
             #값을 넘겨 줄떄는 사전형으로 만들어서 하면 깔끔하니 보기가 좋다. 
             # 또 다른 방법으로 넘겨 줄 수 있는데 context={ 'user': user} 이런식으로 가능하다.
             context = dict()
@@ -121,3 +122,43 @@ def profile(request, user_id):
 
         return render(request, 'post/post/profile.html', context=context)
     
+@login_required(login_url='/account/signin/')
+def profile_update(request, user_id):
+    if request.method == 'GET':
+        context = dict()
+        context['user'] = User.objects.get(id=user_id)
+        return render(request, 'post/post/profile_update_form.html', context=context)
+    
+    elif request.method == 'POST':
+        edit_user = User.objects.get(id=user_id)
+        edit_user.username = request.POST.get('username')
+        edit_user.profile_image = request.FILES['image']
+        edit_user.intro = request.POST.get('intro')
+        edit_user.save()
+        
+        return redirect('post:profile', user_id)
+
+@login_required(login_url='/account/signin/')
+def likes(request, post_id):
+    if request.method == 'POST':
+        post = Post.objects.get(id=post_id)
+
+        if post.like_authors.filter(id=request.user.id).exists(): 
+            post.like_authors.remove(request.user)
+        else:
+            post.like_authors.add(request.user)
+            # print(request.META['HTTP_REFERER']) #현재페이지로 리다이렉트 함!
+        return redirect(request.META['HTTP_REFERER']) #새로고침 하는 방법은 없을까?
+    
+@login_required(login_url='/account/signin/')
+def liked_list(request, user_id):
+    if request.method == 'GET':
+        context = dict()
+        context['profile_user'] = User.objects.get(id=user_id)
+        context["liked_posts"] = Post.objects.filter(like_authors=user_id)
+        
+        return render(request, 'post/post/post_like_list.html', context=context)
+        
+
+    
+        

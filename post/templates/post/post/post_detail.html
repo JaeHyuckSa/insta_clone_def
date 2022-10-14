@@ -89,10 +89,10 @@
 
                                 <div class="bottom_icons">
                                     <div class="left_icons" style="width:100px; height:30px;" >
-                                        {% comment %} <form action="{% url 'process-like' post_ctype_id post.id %}" 
+                                            <form action="{% url 'post:likes' post.id %}" 
                                             method="post">
                                             {% csrf_token %}
-                                            {% if post.likes.all %}
+                                            {% if user in post.like_authors.all %}
                                                 <input
                                                     type="submit"
                                                     value=""
@@ -107,11 +107,10 @@
                                                     name="39"
                                                     data-name="heartbeat"></input>
                                             {% endif %}                                        
-                                            <a href="{% url 'post-detail' post.id %}">
+                                            <a href="{% url 'post:post-detail' post.id %}">
                                                 <div class="sprite_bubble_icon" style="float:right; margin-left:10px;"> </div>
                                             </a>  
-                                        </form>                                         {% endcomment %}
-                                                                                 
+                                        </form>                                         
                                     </div>
                                     <div class="right_icon">
                                         <div class="sprite_bookmark_outline" data-name="book-mark"></div>
@@ -119,7 +118,7 @@
                                 </div>
                                 <div class="count_likes">
                                     좋아요
-                                    <span class="count">2345</span>
+                                    <span class="count">{{ post.like_authors.count}}</span>
                                     개
                                 </div>
                                 <div class="timer">{{ post.created_at }}</div>

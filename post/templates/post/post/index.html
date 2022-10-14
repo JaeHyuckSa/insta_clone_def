@@ -58,11 +58,14 @@
 
                                 <div class="bottom_icons">
                                     <div class="left_icons">
-                                        <div class="heart_btn">
-                                            <div class="sprite_heart_icon_outline" name="39" data-name="heartbeat"></div>
-                                        </div>
-                                        <div class="sprite_bubble_icon"></div>
-                                        <div class="sprite_share_icon" data-name="share"></div>
+                                        <form action="{% url 'post:likes' post.id %}" method="post" id='like_icon' style="display: flex; justify-content: space-between; align-items: center;">{% csrf_token %}
+                                            {% if user in post.like_authors.all %}
+                                                <button type="submit" class="sprite_heart_icon_outline on" data-name="heartbeat"></button>
+                                            {% else %}
+                                                <button type="submit" class="sprite_heart_icon_outline" data-name="heartbeat"></button>
+                                            {% endif %}
+                                        </form>
+                                        <a href="{% url 'post:post-detail' post.id %}"><div class="sprite_bubble_icon" style="margin-left:10px; float:right;"></div></a>
                                     </div>
                                     <div class="right_icon">
                                         <div class="sprite_bookmark_outline" data-name="bookmark"></div>
@@ -71,7 +74,7 @@
 
                                 <div class="likes m_text">
                                     좋아요
-                                    <span id="like-count-39">2,346</span>
+                                    <span id="like-count-39">{{ post.like_authors.count }}</span>
                                     <span id="bookmark-count-39"></span>
                                     개
                                 </div>
@@ -96,7 +99,6 @@
                                         <div class="comment_field" style="height: 20px; font-size: 13px;">
                                             <input type="text" placeholder="댓글달기..." name="content">
                                             <button type="submit" style=" border: none; background:none; float:right; font-size : 13px; color: skyblue">게시</button>
-                                            </input>
                                         </div>
                                     </form>
                                 </div>
