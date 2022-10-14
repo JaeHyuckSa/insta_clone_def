@@ -108,6 +108,6 @@ def comment_update(request, comment_id):
         post_id = edit_comment.post.id
         edit_comment.content = request.POST.get('content')
         edit_comment.save()
-        #디테일 페이지로 이동하는 방법
+        #디테일 페이지로 이동하는 방법 comment로 인자값을 가져온다!
         return redirect('post:post-detail', post_id)
 
