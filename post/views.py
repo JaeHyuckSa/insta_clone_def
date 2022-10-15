@@ -19,7 +19,8 @@ def index(request):
             context['latest_following_post'] = Post.objects.filter(author__followers=user).order_by('-create_at')
             return render(request, 'post/post/index.html', context=context)
         return render(request, 'post/post/index.html')
-    
+
+#로그인이 한 사람만 접속이 가능하고 안되어있다면 로그인페이지로!
 @login_required(login_url='user:signin')
 def all_post(request):
     if request.method == 'GET':
@@ -43,9 +44,7 @@ def post_detail(request, post_id):
         #filter와 get의 차이를 확실히 알아야한다.최신순으로 불러오기!
         context['comments'] = Comment.objects.filter(post_id=post_id).order_by('-create_at')
         return render(request, 'post/post/post_detail.html', context=context)
-    
 
-#로그인이 한 사람만 접속이 가능하고 안되어있다면 로그인페이지로!
 @login_required(login_url='user:signin')
 def post_create(request):
     if request.method == 'GET':
@@ -111,7 +110,6 @@ def comment_delete(request, comment_id):
 
         return redirect('post:post-detail', post_id)
         
-        
 @login_required(login_url='user:signin')
 def comment_update(request, comment_id):
     if request.method == 'GET':
@@ -162,9 +160,8 @@ def likes(request, post_id):
             post.like_authors.remove(request.user)
         else:
             post.like_authors.add(request.user)
-            print(request.META['HTTP_REFERER']) #현재페이지로 리다이렉트 함!
-        return redirect(request.META['HTTP_REFERER']) #새로고침 하는 방법은 없을까?
-    
+        return redirect(request.META['HTTP_REFERER']) #현재페이지로 리다이렉트 함!
+
 @login_required(login_url='user:signin')
 def liked_list(request, user_id):
     if request.method == 'GET':
