@@ -1,0 +1,54 @@
+{% extends "../post_base/base_with_header.html" %}
+
+{% block title %}추천 친구 목록 | Sparkling Coffee Club{% endblock title %}
+
+{% load static %}
+
+{% block content %}
+<div id="main_container" style="display: flex; margin: auto;">
+    <article class="recommend">
+        <div class="follow-list-header">
+            <h2>회원님을 위한 추천 </h2>
+            <a class="back-link" href="{% url 'post:index' %}">돌아가기</a>
+        </div>
+        <hr>
+        <div class="recommend-box" style="height: 350px; overflow: scroll; overflow-x: hidden;">
+            <div>
+            {% for u in recommends %}
+            {% if u != user and user not in u.followers.all %}
+                <div style="display: flex; flex-direction: row; justify-content: space-between;">
+                    <div style="display: flex; flex-direction: row;">
+                        <div>
+                            <a class="follow-list-row" href="{% url 'post:profile' u.id %}">
+                                <div
+                                    class="cp-avatar medium"
+                                    style="background-image: url('{{ u.profile_image.url }}')"></div>
+                            </a>
+                        </div>
+                        <div style="margin-left: 10px; display: flex; flex-direction: column;">
+                            <span class="nickname">{{ u.username }}</span>
+                            <span class="intro" style="font-size: 12px;">{{ u.intro }}</span>
+                        </div>
+                    </div>
+                    <div>
+                        <form
+                            class="follow-button"
+                            action="{% url 'post:process-follow' u.id %}"
+                            method="post">
+                            {% csrf_token %}
+                            {% if u in user.followings %}
+                            {% else %}
+                                <button class="btn btn-link" style="font-size: 13px; text-decoration: none;" type="submit">
+                                    팔로우
+                                </button>
+                            {% endif %}
+                        </form>
+                    </div>
+                </div>
+            {% endif %}
+            {% endfor %}
+            </div>
+        </div>
+    </article>
+</div>
+{% endblock content %}

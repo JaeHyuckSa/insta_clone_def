@@ -53,7 +53,7 @@ def signup(request):
                 User.objects.create_user(email=email, username=username, password=password)
                 return redirect('/account/signin/')
             
-@login_required
+@login_required(login_url='user:signin')
 def logout(request):
     auth.logout(request)
     return redirect('/account/signin/')

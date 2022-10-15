@@ -1,0 +1,42 @@
+{% extends "../post_base/base_with_header.html" %}
+
+{% load static %}
+
+{% block title %}팔로워 목록 | Sparkling Coffee Club{% endblock title %}
+
+{% block content %}
+    <div id="main_container">
+        <div class="form_container ">
+            <main class="site-body">
+                <div class="follow-list">
+                    <div class="follow-list-header">
+                        <h2>팔로워 ({{ followers.count }})</h2>
+                        <a class="back-link" href="{% url 'post:profile' profile_user_id.id %}">프로필로 돌아가기</a>
+                    </div>
+                    <hr>
+                    {% if followers %}
+                        <div class="follow-list-block" style="height: 350px; overflow: scroll; overflow-x: hidden;">
+                            {% for u in followers %}
+                            <div class="follow-list-block-inner" style="display: flex; align-content: center;">
+                                <div>
+                                    <a class="follow-list-row" href="{% url 'post:profile' u.id %}">
+                                        <div
+                                            class="cp-avatar medium"
+                                            style="background-image: url('{{ u.profile_image.url }}')"></div>
+                                    </a>
+                                </div>
+                                <div style="margin-left: 10px; display: flex; flex-direction: column;">
+                                <span class="nickname">{{ u.username }}</span>
+                                <span class="intro" style="font-size: 12px;">{{ u.intro }}</span>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        팔로우 없음
+                    {% endif %}
+                </div>
+            </main>
+        </div>
+    </div>
+{% endblock content %}

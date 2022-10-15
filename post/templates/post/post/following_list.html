@@ -1,0 +1,63 @@
+{% extends "../post_base/base_with_header.html" %}
+
+{% load static %}
+
+{% block title %}팔로잉 목록 | Sparkling Coffee Club{% endblock title %}
+
+{% block content %}
+    <div id="main_container">
+        <div class="form_container ">
+            <main class="site-body">
+                <div class="follow-list">
+                    <div class="follow-list-header">
+                        <h2>팔로잉 ({{ followings.count }})</h2>
+                        <a class="back-link" href="{% url 'post:profile' profile_user_id.id %}">프로필로 돌아가기</a>
+                    </div>
+                    <hr>
+                    {% if followings %}
+                    <div class="follow-list-block" style="height: 350px; overflow: scroll; overflow-x: hidden;">
+                        {% for u in followings %}
+                        <div class="follow-list-block-inner" style="display: flex; flex-direction: row; justify-content: space-between;">
+                            <div style="display: flex; align-content: center;">
+                                <div>
+                                <a class="follow-list-row" href="{% url 'post:profile' u.id %}">
+                                    <div
+                                        class="cp-avatar medium"
+                                        style="background-image: url('{{ u.profile_image.url }}')"></div>
+                                </a>
+                                </div>
+                                <div style="margin-left: 10px; display: flex; flex-direction: column;">
+                                    <span class="nickname">{{ u.username }}</span>
+                                    <span class="intro" style="font-size: 12px;">{{ u.intro }}</span>
+                                </div>
+                            </div>
+                            <div style="margin-right: 20px;">
+                                {% if user.is_authenticated and user != u %}
+                                <form
+                                    class="follow-button"
+                                    action="{% url 'post:process-follow' u.id %}"
+                                    method="post">
+                                    {% csrf_token %}
+                                    {% if u in followings %}
+                                        <button class="btn btn-link" style="text-decoration: none; border: 0.5px solid lightgray; font-size: 13px; color: black; margin: auto;" type="submit">
+                                            언팔로우
+                                        </button>
+                                    {% else %}
+                                        <button class="btn btn-primary" style="font-size: 13px; margin-left: 150px;" type="submit">
+                                            팔로우
+                                        </button>
+                                    {% endif %}
+                                </form>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                        팔로잉 없음
+                    {% endif %}
+                </div>
+            </main>
+        </div>
+    </div>
+{% endblock content %}

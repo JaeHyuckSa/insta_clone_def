@@ -1,0 +1,34 @@
+{% extends "../post_base/base_with_header.html" %}
+
+{% block title %}
+    모든 포스트 | Sparkling Coffee Club{% endblock title %}
+
+{% load widget_tweaks %}
+
+{% load static %}
+
+{% block content %}
+    <div id="main_container">
+        <section class="b_inner">
+            <div class="hori_cont">
+                <div class="mylist_contents contents_container active">
+                    {% if posts %}
+                        {% for post in posts %}
+                            <div class="pic" style="width: 300px; height: 300px;">
+                                <a href="{% url 'post:post-detail' post.id %}"><img src="{{ post.image.url }}" alt=""></a>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                            <div
+                                style="display: flex; flex-direction: column; align-items: center; margin: auto;">
+                                <div class="sprite_post_camera_icon"></div>
+                                <div style="margin-top: 10px;">
+                                    게시물을 추가해주세요
+                                </div>
+                            </div>
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock content %}

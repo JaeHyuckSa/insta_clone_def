@@ -18,13 +18,13 @@
                     <div class="detail">
                         <div class="top">
                             <div class="user_name">{{ profile_user.username }}</div>
-                            {% comment %} {% if user.is_authenticated and user != profile_user %}
+                            {% if user.is_authenticated and user != profile_user %}
                             <form
                                 class="follow-button"
-                                action="{% url 'process-follow' profile_user.id %}"
+                                action="{% url 'post:process-follow' profile_user.id %}"
                                 method="post">
                                 {% csrf_token %}
-                                {% if is_following %}
+                                {% if user in profile_user.followers.all %}
                                     <button class="btn btn-link" style="text-decoration: none; border: 0.5px solid lightgray; font-size: 13px; color: black;" type="submit">
                                         언팔로우
                                     </button>
@@ -34,7 +34,7 @@
                                     </button>
                                 {% endif %}
                             </form>
-                            {% endif %} {% endcomment %}
+                            {% endif %}
                             {% if profile_user == user%}
                                 <a href="{% url 'post:profile-update' user.id %}" class="profile_edit">프로필 편집</a>
                                 <a href="#" style="border: none; width: 65px;">
@@ -51,15 +51,15 @@
                                 {{ profile_user.post.count }}
                             </div>
                             <div style="margin-right: 50px;">
-                                <a href="#">
+                                <a href="{% url 'post:follower-list' profile_user.id %}">
                                     팔로워
-                                    {% comment %} {{ profile_user.followers.count }} {% endcomment %}
+                                    {{ profile_user.followers.count }}
                                 </a>
                             </div>
                             <div>
-                                <a href="#">
+                                <a href="{% url 'post:following-list' profile_user.id %}">
                                     팔로잉
-                                    {% comment %} {{ profile_user.following.count }} {% endcomment %}
+                                    {{ profile_user.followings.count }}
                                 </a>
                             </div>
                         </div>

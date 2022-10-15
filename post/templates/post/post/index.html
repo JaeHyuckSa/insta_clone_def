@@ -21,7 +21,8 @@
             <section id="main_container">
                 <div class="inner">
                     <div class="contents_box">
-                        {% for post in posts %}
+                    {% if latest_following_post %}
+                        {% for post in latest_following_post %}
                             <article class="contents">
                                 <header class="top">
                                     <div class="user_container">
@@ -104,6 +105,14 @@
                                 </div>
                             </article>
                         {% endfor %}
+                    {% else %}
+                    <div style="display: flex; flex-direction: column; align-items: center; margin: 80px 300px 0px 0px;">
+                        <div class ="sprite_follow_icon"></div>
+                        <div style="margin-top: 20px; font-size: 20px;">
+                            팔로우를 추가해주세요
+                        </div>
+                    </div>
+                    {% endif %}
 
                     </div>
                     <input type="hidden" id="page" value="1">
@@ -121,23 +130,44 @@
                             </div>
                         </div>
 
-                        <article class="story">
-                            <header class="story_header">
-                                <div>스토리</div>
-                                <div class="more">모두 보기</div>
+                        <article class="recommend">
+                            <header class="reco_header">
+                                <div>회원님을 위한 추천</div>
+                                <a href="{% url 'post:recommend-list' %}">모두 보기</a>
                             </header>
                             <div class="scroll_inner">
-                                {% for user in users %}
-                                    <div class="thumb_user">
+                                {% for u in users %}
+                                {% if u != user and user not in u.followers.all %}
+                                <div class="thumb_user" style="display: flex; flex-direction: row; justify-content: space-between;">
+                                    <div style="display: flex; align-content: center;">
                                         <div class="profile_thumb">
-                                            <a href="{% url 'post:profile' user.id %}">
-                                                <img src="{{ user.profile_image.url }}" alt="프로필사진">
+                                            <a href="{% url 'post:profile' u.id %}">
+                                                <img src="{{ u.profile_image.url }}" alt="프로필사진">
                                             </a>
                                         </div>
                                         <div class="detail">
-                                            <div class="id">{{ user.username }}</div>
+                                            <div class="id">{{u.username}}</div>
                                         </div>
                                     </div>
+                                    <div>
+                                        <form
+                                            class="follow-button"
+                                            action="{% url 'post:process-follow' u.id %}"
+                                            method="post">
+                                            {% csrf_token %}
+                                            {% if u in user.following %}
+                                                <button class="btn btn-link" style="text-decoration: none; border: 0.5px solid lightgray; font-size: 13px; color: black;" type="submit">
+                                                    언팔로우
+                                                </button>
+                                            {% else %}
+                                                <button class="btn btn-link" style="font-size: 13px; text-decoration: none;" type="submit">
+                                                    팔로우
+                                                </button>
+                                            {% endif %}
+                                        </form>
+                                    </div>
+                                </div>
+                                {% endif %}
                                 {% endfor %}
                             </div>
                         </article>
@@ -160,5 +190,4 @@
             </div>
         </div>
     {% endif %}
-
 {% endblock content %}

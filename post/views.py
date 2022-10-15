@@ -1,8 +1,10 @@
 # 리디렉션을 남발하면 서버 터진다...
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q 
 from .models import Post, Comment
 from user.models import User
+
 
 # Create your views here.
 
@@ -10,16 +12,29 @@ def index(request):
     if request.method == 'GET':
         user = request.user.is_authenticated
         if user:
-            print(request.user)
             #값을 넘겨 줄떄는 사전형으로 만들어서 하면 깔끔하니 보기가 좋다. 
             # 또 다른 방법으로 넘겨 줄 수 있는데 context={ 'user': user} 이런식으로 가능하다.
             context = dict()
-            context['posts'] = Post.objects.all().order_by('-create_at')
             context['users'] = User.objects.all()
+            context['latest_following_post'] = Post.objects.filter(author__followers=user).order_by('-create_at')
             return render(request, 'post/post/index.html', context=context)
         return render(request, 'post/post/index.html')
+    
+@login_required(login_url='user:signin')
+def all_post(request):
+    if request.method == 'GET':
+        context = dict()
+        context['posts'] = Post.objects.all()
+        return render(request, 'post/post/all_post.html', context=context)
 
-@login_required(login_url='/account/signin/')
+@login_required(login_url='user:signin')
+def recommend_list(request):
+    if request.method == 'GET':
+        context = dict()
+        context['recommends'] = User.objects.all()
+        return render(request, 'post/post/recommend_list.html', context=context)
+
+@login_required(login_url='user:signin')
 def post_detail(request, post_id):
     if request.method == 'GET':
         context = dict()
@@ -31,7 +46,7 @@ def post_detail(request, post_id):
     
 
 #로그인이 한 사람만 접속이 가능하고 안되어있다면 로그인페이지로!
-@login_required(login_url='/account/signin/')
+@login_required(login_url='user:signin')
 def post_create(request):
     if request.method == 'GET':
         return render(request, 'post/post/new_post.html')
@@ -46,7 +61,7 @@ def post_create(request):
         Post.objects.create(author=user, image=image, content=content)
         return redirect('/')
     
-@login_required(login_url='/account/signin/')
+@login_required(login_url='user:signin')
 def post_delete(request, post_id):
     if request.method == 'GET':
         return  render(request, 'post/post/post_confirm_delete.html')
@@ -56,7 +71,7 @@ def post_delete(request, post_id):
         post.delete()
         return redirect('/')
     
-@login_required(login_url='/account/signin/')
+@login_required(login_url='user:signin')
 def post_update(request, post_id):
     if request.method == 'GET':
         context = dict()
@@ -72,7 +87,7 @@ def post_update(request, post_id):
         
         return redirect('/')
     
-@login_required(login_url='/account/signin/')
+@login_required(login_url='user:signin')
 def comment_create(request, comment_id):
     if request.method == 'POST':
         user = request.user
@@ -84,7 +99,7 @@ def comment_create(request, comment_id):
         #post_id와 post.id와 다른 것이다!!!!!!!!!!!!!!!!!
         return redirect('post:post-detail', post.id)
     
-@login_required(login_url='/account/signin/')
+@login_required(login_url='user:signin')
 def comment_delete(request, comment_id):
     if request.method == 'GET':      
         return render(request, 'post/post/comment_confirm_delete.html' )
@@ -97,7 +112,7 @@ def comment_delete(request, comment_id):
         return redirect('post:post-detail', post_id)
         
         
-@login_required(login_url='/account/signin/')
+@login_required(login_url='user:signin')
 def comment_update(request, comment_id):
     if request.method == 'GET':
         context = dict()
@@ -113,7 +128,7 @@ def comment_update(request, comment_id):
         return redirect('post:post-detail', post_id) #redirect는 url 뿐만아니라 url name도 설정해줄 수 있다.
         #return redirect('/post/detail/'+str(post_id)) #장진님! 이런식으로 디테일 페이지로 이동할 수 있는 방법이 있다
 
-@login_required(login_url='/account/signin/')
+@login_required(login_url='user:signin')
 def profile(request, user_id):
     if request.method == 'GET':
         context = dict()
@@ -121,8 +136,8 @@ def profile(request, user_id):
         context["user_post"] = Post.objects.filter(author=user_id)#author를 타고 user_id해야함
 
         return render(request, 'post/post/profile.html', context=context)
-    
-@login_required(login_url='/account/signin/')
+
+@login_required(login_url='user:signin')
 def profile_update(request, user_id):
     if request.method == 'GET':
         context = dict()
@@ -138,7 +153,7 @@ def profile_update(request, user_id):
         
         return redirect('post:profile', user_id)
 
-@login_required(login_url='/account/signin/')
+@login_required(login_url='user:signin')
 def likes(request, post_id):
     if request.method == 'POST':
         post = Post.objects.get(id=post_id)
@@ -147,10 +162,10 @@ def likes(request, post_id):
             post.like_authors.remove(request.user)
         else:
             post.like_authors.add(request.user)
-            # print(request.META['HTTP_REFERER']) #현재페이지로 리다이렉트 함!
+            print(request.META['HTTP_REFERER']) #현재페이지로 리다이렉트 함!
         return redirect(request.META['HTTP_REFERER']) #새로고침 하는 방법은 없을까?
     
-@login_required(login_url='/account/signin/')
+@login_required(login_url='user:signin')
 def liked_list(request, user_id):
     if request.method == 'GET':
         context = dict()
@@ -158,7 +173,32 @@ def liked_list(request, user_id):
         context["liked_posts"] = Post.objects.filter(like_authors=user_id)
         
         return render(request, 'post/post/post_like_list.html', context=context)
-        
 
+@login_required(login_url='user:signin')
+def process_follow(request, user_id):
+    if request.method == 'POST':
+        user = User.objects.get(id=user_id)
+        if user != request.user:
+            if user.followers.filter(id=request.user.id).exists():
+                user.followers.remove(request.user)
+            else:
+                user.followers.add(request.user)
+        return redirect(request.META['HTTP_REFERER'])
     
-        
+@login_required(login_url='user:signin')
+def following_list(request, user_id):
+    if request.method == 'GET':
+        context = dict()
+        context['followings'] = User.objects.get(id=user_id).followings.all()
+        context['profile_user_id'] = User.objects.get(id=user_id)
+        return render(request, 'post/post/following_list.html', context=context)
+
+@login_required(login_url='user:signin')
+def follower_list(request, user_id):
+    if request.method == 'GET':
+        context = dict()
+        context['followers'] = User.objects.get(id=user_id).followers.all()
+        context['profile_user_id'] = User.objects.get(id=user_id)
+        return render(request, 'post/post/follower_list.html', context=context)
+
+
