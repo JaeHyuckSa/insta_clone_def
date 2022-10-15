@@ -1,10 +1,13 @@
 {% extends "../post_base/base_with_header.html" %}
 
 {% load static %}
+
 {% block title %}
-    {{ profile_user.username }}
-    | Sparkling Coffee Club
+
+{{ profile_user.username }}| Sparkling Coffee Club
+
 {% endblock title%}
+
 {% block content %}
     <section id="container">
         <div id="main_container">
@@ -21,7 +24,7 @@
                             {% if user.is_authenticated and user != profile_user %}
                             <form
                                 class="follow-button"
-                                action="{% url 'post:process-follow' profile_user.id %}"
+                                action="{% url 'user:process-follow' profile_user.id %}"
                                 method="post">
                                 {% csrf_token %}
                                 {% if user in profile_user.followers.all %}
@@ -36,7 +39,7 @@
                             </form>
                             {% endif %}
                             {% if profile_user == user%}
-                                <a href="{% url 'post:profile-update' user.id %}" class="profile_edit">프로필 편집</a>
+                                <a href="{% url 'user:profile-update' user.id %}" class="profile_edit">프로필 편집</a>
                                 <a href="#" style="border: none; width: 65px;">
                                     <div class="sprite_gear_icon"></div>
                                 </a>
@@ -51,13 +54,13 @@
                                 {{ profile_user.post.count }}
                             </div>
                             <div style="margin-right: 50px;">
-                                <a href="{% url 'post:follower-list' profile_user.id %}">
+                                <a href="{% url 'user:follower-list' profile_user.id %}">
                                     팔로워
                                     {{ profile_user.followers.count }}
                                 </a>
                             </div>
                             <div>
-                                <a href="{% url 'post:following-list' profile_user.id %}">
+                                <a href="{% url 'user:following-list' profile_user.id %}">
                                     팔로잉
                                     {{ profile_user.followings.count }}
                                 </a>
@@ -69,7 +72,7 @@
                 {% if user == profile_user %}
                 <div
                     style="display: flex; flex-direction: row; justify-content: center; margin-bottom: 20px;">
-                    <a href="{% url 'post:profile' user.id %}">
+                    <a href="{% url 'user:profile' user.id %}">
                         <div style="margin-right: 40px; display: flex; justify-content: center;">
                             <div class="sprite_camera_icon" style="margin-right: 10px;"></div>게시글
                         </div>

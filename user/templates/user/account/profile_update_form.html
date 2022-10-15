@@ -1,6 +1,4 @@
-{% extends "../post_base/base_with_header.html" %}
-
-{% load widget_tweaks %}
+{% extends "../user_base/base_with_header.html" %}
 
 {% block title %}회원정보 수정 | Sparkling Coffee Club{% endblock title %}
 
@@ -48,7 +46,7 @@
   <!-- side Nav bar -->
   <div id="side-navbar">
     <div class="menu" style="margin-top: 40px;">
-      <div id="nav_div"><a id="nav_a" href="{% url 'post:profile-update' user.id  %}">프로필 편집</a></div>
+      <div id="nav_div"><a id="nav_a" href="{% url 'user:profile-update' user.id  %}">프로필 편집</a></div>
       <div id="nav_div"><a id="nav_a" href="#">비밀번호 변경</a></div>
       <div id="nav_div"><a id="nav_a" href="#">계정 비활성화</a></div>
     </div>
@@ -102,15 +100,11 @@
           </div>
         </div>
         
-        
-        
-
-
         <div style="width: 100%;min-width: 500px; height: 200px; float: left;padding:0px 0px 0px 180px">
           <div class="buttons">
             <button type="submit" class="btn btn-primary"
             style="margin-bottom:20px;background-color:rgb(0, 149, 247);width: 80px">제출</button>
-            <button onclick="{% url 'post:profile' user.id %}" class="btn btn-secondary"
+            <button onclick="{% url 'user:profile' user.id %}" class="btn btn-secondary"
             style="margin-bottom:20px;;width: 80px">취소</button>
           </div>
         </div>

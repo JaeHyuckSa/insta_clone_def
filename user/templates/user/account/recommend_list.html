@@ -1,4 +1,4 @@
-{% extends "../post_base/base_with_header.html" %}
+{% extends "../user_base/base_with_header.html" %}
 
 {% block title %}추천 친구 목록 | Sparkling Coffee Club{% endblock title %}
 
@@ -19,7 +19,7 @@
                 <div style="display: flex; flex-direction: row; justify-content: space-between;">
                     <div style="display: flex; flex-direction: row;">
                         <div>
-                            <a class="follow-list-row" href="{% url 'post:profile' u.id %}">
+                            <a class="follow-list-row" href="{% url 'user:profile' u.id %}">
                                 <div
                                     class="cp-avatar medium"
                                     style="background-image: url('{{ u.profile_image.url }}')"></div>
@@ -33,7 +33,7 @@
                     <div>
                         <form
                             class="follow-button"
-                            action="{% url 'post:process-follow' u.id %}"
+                            action="{% url 'user:process-follow' u.id %}"
                             method="post">
                             {% csrf_token %}
                             {% if u in user.followings %}

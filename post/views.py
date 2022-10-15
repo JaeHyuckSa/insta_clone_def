@@ -1,10 +1,8 @@
 # 리디렉션을 남발하면 서버 터진다...
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q 
 from .models import Post, Comment
 from user.models import User
-
 
 # Create your views here.
 
@@ -27,13 +25,6 @@ def all_post(request):
         context = dict()
         context['posts'] = Post.objects.all()
         return render(request, 'post/post/all_post.html', context=context)
-
-@login_required(login_url='user:signin')
-def recommend_list(request):
-    if request.method == 'GET':
-        context = dict()
-        context['recommends'] = User.objects.all()
-        return render(request, 'post/post/recommend_list.html', context=context)
 
 @login_required(login_url='user:signin')
 def post_detail(request, post_id):
@@ -127,31 +118,6 @@ def comment_update(request, comment_id):
         #return redirect('/post/detail/'+str(post_id)) #장진님! 이런식으로 디테일 페이지로 이동할 수 있는 방법이 있다
 
 @login_required(login_url='user:signin')
-def profile(request, user_id):
-    if request.method == 'GET':
-        context = dict()
-        context['profile_user'] = User.objects.get(id=user_id)
-        context["user_post"] = Post.objects.filter(author=user_id)#author를 타고 user_id해야함
-
-        return render(request, 'post/post/profile.html', context=context)
-
-@login_required(login_url='user:signin')
-def profile_update(request, user_id):
-    if request.method == 'GET':
-        context = dict()
-        context['user'] = User.objects.get(id=user_id)
-        return render(request, 'post/post/profile_update_form.html', context=context)
-    
-    elif request.method == 'POST':
-        edit_user = User.objects.get(id=user_id)
-        edit_user.username = request.POST.get('username')
-        edit_user.profile_image = request.FILES['image']
-        edit_user.intro = request.POST.get('intro')
-        edit_user.save()
-        
-        return redirect('post:profile', user_id)
-
-@login_required(login_url='user:signin')
 def likes(request, post_id):
     if request.method == 'POST':
         post = Post.objects.get(id=post_id)
@@ -170,32 +136,3 @@ def liked_list(request, user_id):
         context["liked_posts"] = Post.objects.filter(like_authors=user_id)
         
         return render(request, 'post/post/post_like_list.html', context=context)
-
-@login_required(login_url='user:signin')
-def process_follow(request, user_id):
-    if request.method == 'POST':
-        user = User.objects.get(id=user_id)
-        if user != request.user:
-            if user.followers.filter(id=request.user.id).exists():
-                user.followers.remove(request.user)
-            else:
-                user.followers.add(request.user)
-        return redirect(request.META['HTTP_REFERER'])
-    
-@login_required(login_url='user:signin')
-def following_list(request, user_id):
-    if request.method == 'GET':
-        context = dict()
-        context['followings'] = User.objects.get(id=user_id).followings.all()
-        context['profile_user_id'] = User.objects.get(id=user_id)
-        return render(request, 'post/post/following_list.html', context=context)
-
-@login_required(login_url='user:signin')
-def follower_list(request, user_id):
-    if request.method == 'GET':
-        context = dict()
-        context['followers'] = User.objects.get(id=user_id).followers.all()
-        context['profile_user_id'] = User.objects.get(id=user_id)
-        return render(request, 'post/post/follower_list.html', context=context)
-
-

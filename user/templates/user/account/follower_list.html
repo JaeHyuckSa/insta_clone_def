@@ -1,4 +1,4 @@
-{% extends "../post_base/base_with_header.html" %}
+{% extends "../user_base/base_with_header.html" %}
 
 {% load static %}
 
@@ -11,7 +11,7 @@
                 <div class="follow-list">
                     <div class="follow-list-header">
                         <h2>팔로워 ({{ followers.count }})</h2>
-                        <a class="back-link" href="{% url 'post:profile' profile_user_id.id %}">프로필로 돌아가기</a>
+                        <a class="back-link" href="{% url 'user:profile' profile_user_id.id %}">프로필로 돌아가기</a>
                     </div>
                     <hr>
                     {% if followers %}
@@ -19,7 +19,7 @@
                             {% for u in followers %}
                             <div class="follow-list-block-inner" style="display: flex; align-content: center;">
                                 <div>
-                                    <a class="follow-list-row" href="{% url 'post:profile' u.id %}">
+                                    <a class="follow-list-row" href="{% url 'user:profile' u.id %}">
                                         <div
                                             class="cp-avatar medium"
                                             style="background-image: url('{{ u.profile_image.url }}')"></div>

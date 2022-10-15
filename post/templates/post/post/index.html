@@ -27,7 +27,7 @@
                                 <header class="top">
                                     <div class="user_container">
                                         <div class="profile_img">
-                                            <a href="{% url 'post:profile' user.id %}">
+                                            <a href="{% url 'user:profile' user.id %}">
                                                 <img src="{{ post.author.profile_image.url }}" alt="프로필이미지">
                                             </a>
                                         </div>
@@ -120,7 +120,7 @@
                     <div class="side_box">
                         <div class="user_profile">
                             <div class="profile_thumb">
-                                <a href="{% url 'post:profile' user.id %}">
+                                <a href="{% url 'user:profile' user.id %}">
                                     <img src="{{ user.profile_image.url }}" alt="프로필사진">
                                 </a>
                             </div>
@@ -133,7 +133,7 @@
                         <article class="recommend">
                             <header class="reco_header">
                                 <div>회원님을 위한 추천</div>
-                                <a href="{% url 'post:recommend-list' %}">모두 보기</a>
+                                <a href="{% url 'user:recommend-list' %}">모두 보기</a>
                             </header>
                             <div class="scroll_inner">
                                 {% for u in users %}
@@ -141,7 +141,7 @@
                                 <div class="thumb_user" style="display: flex; flex-direction: row; justify-content: space-between;">
                                     <div style="display: flex; align-content: center;">
                                         <div class="profile_thumb">
-                                            <a href="{% url 'post:profile' u.id %}">
+                                            <a href="{% url 'user:profile' u.id %}">
                                                 <img src="{{ u.profile_image.url }}" alt="프로필사진">
                                             </a>
                                         </div>
@@ -152,7 +152,7 @@
                                     <div>
                                         <form
                                             class="follow-button"
-                                            action="{% url 'post:process-follow' u.id %}"
+                                            action="{% url 'user:process-follow' u.id %}"
                                             method="post">
                                             {% csrf_token %}
                                             {% if u in user.following %}
