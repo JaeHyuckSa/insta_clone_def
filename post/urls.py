@@ -28,7 +28,7 @@ urlpatterns = [
     
     #follow
     path('users/<int:user_id>/follow/', views.process_follow, name='process-follow'),
-    path('users/<int:user_id>/following/', views.following_list, name='following-list'),
+    path('users/<int:user_id>/followings/', views.following_list, name='following-list'),
     path('users/<int:user_id>/followers/', views.follower_list, name='follower-list'),
     path('users/recommend/', views.recommend_list, name='recommend-list'),
 ]

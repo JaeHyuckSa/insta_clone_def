@@ -26,3 +26,6 @@
 ![ex_screenshot](./img/erd.png)
 
 ## ****🎨 API 설계****
+![ex_screenshot](./img/API1.png)
+![ex_screenshot](./img/API2.png)
+![ex_screenshot](./img/API3.png)
