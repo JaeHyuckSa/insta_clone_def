@@ -104,17 +104,19 @@ body {
     height: 24px;
 }
 
-.sprite_bookmark_outline {
-    display: inline-block;
-    background: url('/static/imgs/background01.png') no-repeat -237px -286px;
-    width: 19px;
-    height: 24px;
+.sprite_bookmarks_outline {
+	background: url('/static/imgs/background01.png') no-repeat -237px -286px;
+	width: 19px;
+	height: 24px;
+    border: 0;
 }
-.sprite_bookmark_outline.on {
-    background: url('/static/imgs/background01.png') no-repeat -159px -286px;
-    width: 19px;
-    height: 24px;
+
+.sprite_bookmarks_outline.on{
+	background: url('/static/imgs/background01.png') no-repeat -159px -286px;
+	width: 19px;
+	height: 24px;
 }
+
 .sprite_small_filled__heart_icon {
     display: inline-block;
 	background: url('/static/imgs/background01.png') no-repeat -323px -287px;

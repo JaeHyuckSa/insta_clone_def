@@ -113,7 +113,13 @@
                                         </form>                                         
                                     </div>
                                     <div class="right_icon">
-                                        <div class="sprite_bookmark_outline" data-name="book-mark"></div>
+                                        <form action="{% url 'post:bookmarks' post.id %}" method="post">{% csrf_token %}
+                                        {% if user in post.bookmark_authors.all %}
+                                            <button type="submit" class="sprite_bookmarks_outline on" ></button>
+                                        {% else %}
+                                            <button type="submit" class="sprite_bookmarks_outline" ></button>
+                                        {% endif %}
+                                        </form>
                                     </div>
                                 </div>
                                 <div class="count_likes">
@@ -140,12 +146,5 @@
                 </div>
             </section>
         </div>
-        <div class="del_pop">
-            <div class="btn_box">
-                <div class="del">삭제</div>
-                <div class="cancel">취소</div>
-            </div>
-        </div>
-
     </section>
 {% endblock content %}

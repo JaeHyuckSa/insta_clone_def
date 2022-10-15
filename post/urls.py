@@ -20,4 +20,9 @@ urlpatterns = [
     #like
     path('post/<int:post_id>/likes/', views.likes, name='likes'),
     path('users/<int:user_id>/liked_list/', views.liked_list, name='liked-list'),
+    
+    #bookmark
+    path('post/<int:post_id>/bookmarks/', views.bookmarks, name='bookmarks'),
+    path('users/<int:user_id>/bookmarked_list/', views.bookmarked_list, name='bookmarked-list'),
+
 ]

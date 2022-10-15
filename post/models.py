@@ -7,10 +7,11 @@ class Post(models.Model):
     content = models.TextField(max_length=180)
     create_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
-        
+    
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='post')
     
-    like_authors = models.ManyToManyField(User, related_name='like_posts') 
+    like_authors = models.ManyToManyField(User, related_name='like_posts')
+    bookmark_authors = models.ManyToManyField(User, related_name='bookmark_posts')
     
     def __str__(self):
         return self.content

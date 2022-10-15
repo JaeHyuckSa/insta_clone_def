@@ -69,7 +69,13 @@
                                         <a href="{% url 'post:post-detail' post.id %}"><div class="sprite_bubble_icon" style="margin-left:10px; float:right;"></div></a>
                                     </div>
                                     <div class="right_icon">
-                                        <div class="sprite_bookmark_outline" data-name="bookmark"></div>
+                                        <form action="{% url 'post:bookmarks' post.id %}" method="post">{% csrf_token %}
+                                            {% if user in post.bookmark_authors.all %}
+                                                <button type="submit" class="sprite_bookmarks_outline on" ></button>
+                                            {% else %}
+                                                <button type="submit" class="sprite_bookmarks_outline" ></button>
+                                            {% endif %}
+                                        </form>
                                     </div>
                                 </div>
 

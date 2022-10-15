@@ -82,6 +82,11 @@
                             <div class="sprite_heart_icon_outline" style="margin-right: 10px;"></div>좋아요
                         </div>
                     </a>
+                    <a href="{% url 'post:bookmarked-list' user.id %}">
+                        <div style="margin-right: 40px; display: flex; justify-content: center;">
+                            <div class="sprite_bookmarks_outline" style="margin-right: 10px;"></div>저장됨
+                        </div>
+                    </a>
                 </div>
                 {% endif %}
                 <br>

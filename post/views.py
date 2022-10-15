@@ -14,7 +14,7 @@ def index(request):
             # 또 다른 방법으로 넘겨 줄 수 있는데 context={ 'user': user} 이런식으로 가능하다.
             context = dict()
             context['users'] = User.objects.all()
-            context['latest_following_post'] = Post.objects.filter(author__followers=user).order_by('-create_at')
+            context['latest_following_post'] = Post.objects.filter(author__followers=request.user).order_by('-create_at')
             return render(request, 'post/post/index.html', context=context)
         return render(request, 'post/post/index.html')
 
@@ -136,3 +136,23 @@ def liked_list(request, user_id):
         context["liked_posts"] = Post.objects.filter(like_authors=user_id)
         
         return render(request, 'post/post/post_like_list.html', context=context)
+
+@login_required(login_url='user:signin')
+def bookmarks(request, post_id):
+    if request.method == 'POST':
+        post = Post.objects.get(id=post_id)
+
+        if post.bookmark_authors.filter(id=request.user.id).exists(): 
+            post.bookmark_authors.remove(request.user)
+        else:
+            post.bookmark_authors.add(request.user)
+        return redirect(request.META['HTTP_REFERER']) #현재페이지로 리다이렉트 함!
+
+@login_required(login_url='user:signin')
+def bookmarked_list(request, user_id):
+    if request.method == 'GET':
+        context = dict()
+        context['profile_user'] = User.objects.get(id=user_id)
+        context["bookmarked_posts"] = Post.objects.filter(bookmark_authors=user_id)
+        
+        return render(request, 'post/post/post_bookmark_list.html', context=context)
