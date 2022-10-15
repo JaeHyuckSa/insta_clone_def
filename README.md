@@ -1,5 +1,7 @@
 ### 내일배움캠프 2번째 프로젝트
 # Insta_Clone
+## 트러블 슈팅
+https://bolder-starburst-a73.notion.site/insta_clone_def-error-309bf99d2f3f4fd48bf235ec98ee629c
 
 ## ****프로젝트 핵심 목적****
 
