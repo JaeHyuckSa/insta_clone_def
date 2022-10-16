@@ -15,8 +15,8 @@ https://bolder-starburst-a73.notion.site/insta_clone_def-error-309bf99d2f3f4fd48
 - 게시글 작성, 보여주기, 수정, 삭제 기능 구현(사진업로드)
 - 댓글 작성, 보여주기, 수정, 삭제 기능 구현
 - 좋아요, 팔로우 기능 구현
-00
-00# ⚙ 개발환경
+
+# ⚙ 개발환경
 ## back-end : <img src="https://img.shields.io/badge/python-3.10.7-3776AB?style=for-the-badge&logo=python&logoColor=white"> <img src="https://img.shields.io/badge/django-092E20?style=for-the-badge&logo=django&logoColor=white">
 
 ## front-end : <img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white"> <img src="https://img.shields.io/badge/css-1572B6?style=for-the-badge&logo=css3&logoColor=white"> <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"> 
