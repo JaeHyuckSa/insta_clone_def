@@ -3,13 +3,13 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import auth
 from .models import User
 from post.models import Post
+from .validators import contains_special_character, contains_uppercase_letter, contains_lowercase_letter, contains_number
 
 
 # Create your views here.
 #template에서 값을 넘겨줄 때 input방식과 form방식이있다.
 #template에서 input값으로 데이터 받아오는 방법이 있다
 #forms.py를 만들어 필드를 정의한다음  form.is_valid를 사용하여 처리리하는 방법이 있다
-
 #account
 def signin(request):
     if request.method == 'GET':
@@ -47,12 +47,22 @@ def signup(request):
         if password != password2:
             return render(request, 'user/account/signup.html', {'error': '패스워드를 확인 해 주세요.'})
         else:
+            if (len(password) < 8 
+                or not contains_uppercase_letter(password)
+                or not contains_lowercase_letter(password)
+                or not contains_number(password) 
+                or not contains_special_character(password) 
+            ):
+                return render(request, 'user/account/signup.html', {'error':'8자 이상의 영문 대/소문자, 숫자, 특수문자 조합이어야 합니다.' })
+            
             if email == '' or username == '' or password == '':
                 return render(request, 'user/account/signup.html', {'error': '이메일과 사용자 이름과 패스워드는 필수 값입니다.'})
 
-            exist_user = User.objects.filter(email=email, username=username)
-            if exist_user:
-                return render(request, 'user/account/signup.html', {'error': '이메일과 사용자이름이 이미 존재합니다. '})
+            email_exist_user = User.objects.filter(email=email)
+            username_exist_user = User.objects.filter(username=username)
+            if email_exist_user or username_exist_user :
+                return render(request, 'user/account/signup.html', {'error': '이메일 또는 사용자이름이 이미 존재합니다. '})
+            
             else:
                 User.objects.create_user(email=email, username=username, password=password)
                 return redirect('/account/signin/')
