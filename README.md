@@ -28,6 +28,6 @@ https://bolder-starburst-a73.notion.site/insta_clone_def-error-309bf99d2f3f4fd48
 ![ex_screenshot](./img/ERD.PNG)
 
 ## ****🎨 API 설계****
-![ex_screenshot](./img/API1.PNG)
-![ex_screenshot](./img/API2.PNG)
+![ex_screenshot](./img/API5.PNG)
+![ex_screenshot](./img/API6.PNG)
 
