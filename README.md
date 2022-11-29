@@ -25,11 +25,9 @@ https://bolder-starburst-a73.notion.site/insta_clone_def-error-309bf99d2f3f4fd48
 ![ex_screenshot](./img/wireframe.png)
 
 ## ****🎯 데이터베이스****
-![ex_screenshot](./img/erd.png)
+![ex_screenshot](./img/ERD.PNG)
 
 ## ****🎨 API 설계****
 ![ex_screenshot](./img/API1.PNG)
 ![ex_screenshot](./img/API2.PNG)
 
-## 추후 기능 
-https://bolder-starburst-a73.notion.site/insta_clone_def-3ab1659c9c6046c684b82beeba0ebb9e
