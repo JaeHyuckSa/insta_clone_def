@@ -4,8 +4,6 @@ from django.contrib.auth.decorators import login_required
 from .models import Post, Comment
 from user.models import User
 
-# Create your views here.
-
 def index(request):
     if request.method == 'GET':
         user = request.user.is_authenticated
